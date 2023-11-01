@@ -101,7 +101,7 @@ function checkEmptyList() {
 
 function renderTask(task) {
     // Формируем CSS класс
-    const cssClass = task.done ? 'task-title task-title--done' : 'task-title';
+    const cssClass = task.done ? 'task-title': 'task-title task-title--done';
 
     // Формируем разметку для новой задачи
     const taskHTML = `
