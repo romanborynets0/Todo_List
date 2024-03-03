@@ -1,4 +1,3 @@
-// Находим элементы на странице
 const form = document.querySelector('#form');
 const taskInput = document.querySelector('#taskInput');
 const tasksList = document.querySelector('#tasksList');
@@ -17,31 +16,19 @@ form.addEventListener('submit', addTask);
 tasksList.addEventListener('click', deleteTask)
 tasksList.addEventListener('click', doneTask)
 
-// Функции
 function addTask(event) {
-    // Отменяем отправку формы
-    event.preventDefault();
+        event.preventDefault();
+        const taskText = taskInput.value;
 
-    // Достаем текст задачи из поля ввода
-    const taskText = taskInput.value;
-
-    // Описываем задачу в виде объекта
-    const newTask = {
+        const newTask = {
         id: Date.now(),
         text: taskText,
         done: false,
     };
 
-    // Добавляем задачу в массив с задачами
     tasks.push(newTask);
-
-    // Сохраняем список задач в хранилище браузера localStorage
     localStorage.setItem('tasks', JSON.stringify(tasks))
-
-    // Рендерим задачу на странице
     renderTask(newTask);
-
-    // Очищаем поле ввода и возвращаем на него фокус
     taskInput.value = '';
     taskInput.focus();
 
@@ -49,33 +36,22 @@ function addTask(event) {
 }
 
 function deleteTask(event) {
-    // Проверяем если клик был НЕ по кнопке "удалить задачу"
     if (event.target.dataset.action !== 'delete') return;
-
     const parenNode = event.target.closest('.list-group-item');
 
-    // Определяем ID задачи
     const id = Number(parenNode.id);
 
-    // Удаляем задча через фильтрацию массива
     tasks = tasks.filter((task) => task.id !== id);
-
-    // Сохраняем список задач в хранилище браузера localStorage
     localStorage.setItem('tasks', JSON.stringify(tasks));
-
-    // Удаляем задачу из разметки
     parenNode.remove();
 
     checkEmptyList();
 }
 
 function doneTask(event) {
-    // Проверяем что клик был НЕ по кнопке "задача выполнена"
     if (event.target.dataset.action !== 'done') return;
-
     const parentNode = event.target.closest('.list-group-item');
 
-    // Определяем ID задачи
     const id = Number(parentNode.id);
     const task = tasks.find( (task) => task.id === id)
     task.done = !task.done
@@ -100,10 +76,8 @@ function checkEmptyList() {
 }
 
 function renderTask(task) {
-    // Формируем CSS класс
     const cssClass = task.done ? 'task-title': 'task-title task-title--done';
 
-    // Формируем разметку для новой задачи
     const taskHTML = `
                 <li id="${task.id}" class="list-group-item d-flex justify-content-between task-item">
 					<span class="${cssClass}">${task.text}</span>
@@ -117,6 +91,5 @@ function renderTask(task) {
 					</div>
 				</li>`;
 
-    // Добавляем задачу на страницу
     tasksList.insertAdjacentHTML('beforeend', taskHTML);
 }
